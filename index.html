@@ -1,36 +1,41 @@
 <!DOCTYPE html>
 <html lang="ja" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title></title>
-    <link rel="stylesheet" href="css/style.css">
-  </head>
-  <body>
-    <div id="app">
-  <h2>TODO List</h2>
-  <!-- submit.preventは404対策 -->
-  <form v-on:submit.prevent>
-    <input type="text" v-model="newItem">
-    <button v-on:click="addItem">
-      Add
-    </button>
-  </form>
-  <ul>
-    <!-- todosの配列の中身をv-forで１つ１つ抜きだす -->
-    <!-- 第一引数:value　第二引数:key -->
-    <li v-for="(todo, index) in todos">
-      <!--jsのtodo　itemに連携している -->
-      <span v-bind:class="{ done: todo.isDone }">{{ todo.item }}</span>
-      <input type="checkbox" v-model="todo.isDone">
-      <!-- deleteItemメソッドのindexを上のindexに呼ぶ -->
-      <button v-on:click="deleteItem(index)">Delete</button>
-    </li>
-  </ul>
-  <!-- <pre>{{ $data }}</pre> -->
-</div>
 
+<head>
+   <meta charset="utf-8">
+   <title></title>
+   <link rel="stylesheet" href="css/style.css">
+</head>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-<script src="js/main.js" charset="utf-8"></script>
+<body>
+   <div id="app">
+      <h2>
+        Bitcoin Price
+      </h2>
+      <section v-if="hasError">
+         Error
+      </section>
+      <!-- trueの場合は下記のsection -->
+      <section v-else>
+         <!-- ページが読み込まれる際loading　終わったら、v-elseが読み込まれる -->
+         <div v-if="loading">
+            Loading.....
+         </div>
+         <div v-else>
+            <ul　v-cloak>
+               <li v-for="(rate, currency) in bpi">
+                  {{ currency }} : {{ rate.rate_float | currencyDecimal}}
+                  <!-- rate_floatはbpiからきてる -->
+               </li>
+               </ul>
+         </div>
+      </section>
+   </div>
+
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
+
+   <script src="js/main.js" charset="utf-8"></script>
 </body>
+
 </html>

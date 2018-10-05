@@ -1,30 +1,28 @@
 var app = new Vue({
   el: '#app',
-  data: {
-    newItem: '',
-    todos: []
+  data: { //この３つはプロパティ
+    bpi: null,
+    hasError: false,
+    loading: true
   },
-  methods: {
-    addItem: function(event) {
-      //alert()
-      //もしnewItemが空ならば、return以降の処理は実行されない
-      if (this.newItem === '') return;
-      var todo = { //HTMLのtodo.itemに連携している
-        item: this.newItem,
-        isDone: false
-      };
-
-      this.todos.push(todo);
-      this.newItem = '';
-    },
-    //deleteボタンは複数の場合があるため、どのdeleteボタンか判断をする必要あり
-    //indexはtodos[]の配列のもの
-    deleteItem: function(index) {
-      //alert();
-
-      //配列から要素を削除するにはsplice-methodsを利用
-      //第一引数が削除を始める配列のインデックス　第二引数は削除する長さ（length）
-      this.todos.splice(index, 1)
+  mounted: function() { //axiosとはVue.jsのライブラリ
+    axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+      .then(function(response) { //responseにAPIの戻り値が入っている
+        //console.log(response.data.bpi)
+        /* console.log(response.data.bpi.USD.rate_foat) */
+        this.bpi = response.data.bpi　　　 //bpiにresponse.data.bpiを入れる
+      }.bind(this)) //APIからbitcoin価格を取得しbpiプロパティにデータ入れる
+      .catch(function(error) {
+        console.log(error)
+        this.hasError = true //この行だけだとhasErrorにアクセスできないので、下のbind(this)要
+      }.bind(this))
+      .finally(function() { //このfinallyは通信が終わった最後に読まれる
+        this.loading = false
+      }.bind(this))
+  },
+  filters: {
+    currencyDecimal(value) {
+      return value.toFixed(2) //数を固定した小数点表記にする 小数点第２まで
     }
   }
 })
