@@ -1,0 +1,9 @@
+#app ul {
+  list-style: none;
+}
+
+/* doneはhtmlのdoneと連動 */
+
+#app li>span.done {
+  text-decoration: line-through;
+}
