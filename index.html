@@ -1,41 +1,31 @@
 <!DOCTYPE html>
-<html lang="ja" dir="ltr">
+<html lang="ja">
 
 <head>
    <meta charset="utf-8">
-   <title></title>
-   <link rel="stylesheet" href="css/style.css">
+   <title>Real time search</title>
 </head>
 
 <body>
    <div id="app">
-      <h2>
-        Bitcoin Price
-      </h2>
-      <section v-if="hasError">
-         Error
-      </section>
-      <!-- trueの場合は下記のsection -->
-      <section v-else>
-         <!-- ページが読み込まれる際loading　終わったら、v-elseが読み込まれる -->
-         <div v-if="loading">
-            Loading.....
-         </div>
-         <div v-else>
-            <ul　v-cloak>
-               <li v-for="(rate, currency) in bpi">
-                  {{ currency }} : {{ rate.rate_float | currencyDecimal}}
-                  <!-- rate_floatはbpiからきてる -->
-               </li>
-               </ul>
-         </div>
-      </section>
+      <p>
+         <input type="text" v-model="keyword">
+      </p>
+      <p>
+         {{ message }}
+      </p>
+      <ul>
+         <li v-for="item in items">
+            <!-- {{ item.title }} -->
+            <a v-bind:href="item.url" target="_blank">{{ item.title }}</a> likes:{{ item.like_likes_count }}
+         </li>
+      </ul>
    </div>
 
    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
    <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
-
-   <script src="js/main.js" charset="utf-8"></script>
+   <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.10/lodash.min.js"></script>
+   <script src="js/main.js"></script>
 </body>
 
 </html>
